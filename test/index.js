@@ -22,3 +22,29 @@ const isBalanced = function (root) {
   dfs(root)
   return flag
 }
+const balanceBST = function (root) {
+  let arr = []
+  // 中序遍历
+  function inOrder (root) {
+    if (!root) return
+		if (root.left) inOrder(root.left)
+    arr.push(root.val)
+    if (root.right) inOrder(root.right) 
+  }
+  // 构造平衡二叉树
+  function buildAVL (low, high) {
+    if (low > high) return null
+    
+    const mid = Math.floor(low + (high - low) / 2)
+    // 创建当前节点
+    let cur = new TreeNode(arr[mid])
+    // 构建左子树
+    cur.left = buildAVL(low, mid - 1)
+    // 构建右子树
+    cur.high = buildAVL(mid + 1, high)
+   	return cur 
+  }
+  
+  inOrder(root)
+  return buildBST(0, arr.length - 1)
+}
